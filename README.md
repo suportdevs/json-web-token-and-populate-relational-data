@@ -1,2 +1,2 @@
 # mongoose-crud
-./node_modules
+/node_modules
