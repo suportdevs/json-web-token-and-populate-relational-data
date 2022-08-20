@@ -1,19 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const todoHandler = require('./routeHandler/todoHandler');
 
 // express app initialization
 const app = express();
 
-const dbUrl = 'mongodb+srv://suportdevs:@$uportdev$123%@cluster0.0idnwn5.mongodb.net/todo?retryWrites=true&w=majority';
-const dbUrls = 'mongodb+srv://suportdevs:suportdevs@cluster0.wanmr.mongodb.net/organicdb?retryWrites=true&w=majority';
+const dbUrl = 'mongodb+srv://suportdevs:suportdevs@cluster0.wanmr.mongodb.net/todo?retryWrites=true&w=majority';
 
 // database connect with mongoose
-mongoose.connect(dbUrls, {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
     .then(() => {console.log("Connection successful.")})
     .catch((err) => {console.log(err)})
+
+app.use('/todo', todoHandler);
+
 
 app.get('/', (req, res) => {
     res.send("hello world.");
