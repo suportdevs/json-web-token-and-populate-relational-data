@@ -4,8 +4,9 @@ const todoHandler = require('./routeHandler/todoHandler');
 
 // express app initialization
 const app = express();
+app.use(express.json())
 
-const dbUrl = 'mongodb+srv://suportdevs:suportdevs@cluster0.wanmr.mongodb.net/todo?retryWrites=true&w=majority';
+const dbUrl = 'mongodb+srv://suportdevs:suportdevs@cluster0.0idnwn5.mongodb.net/todo?retryWrites=true&w=majority';
 
 // database connect with mongoose
 mongoose.connect(dbUrl, {

@@ -30,12 +30,46 @@ router.post('/', async (req, res) => {
 
 // post multiple todo
 router.post('/all', async (req, res) => {
-
+    await Todo.insertMany(req.body, (err) => {
+        if(err){
+            res.status(500).json({error: "There ware a server side error!" + err});
+        } else {
+            res.status(200).json({message: "Todo ware inserted successfully."});
+        }
+    })
 });
 
 // update a todo
 router.put('/:id', async (req, res) => {
-
+    // update one todo
+    // await Todo.updateOne(
+    //     {_id: req.params.id},
+    //     {
+    //         $set: {
+    //             "title": "active"
+    //         },
+    //     }, (err) => {
+    //         if(err){
+    //             res.status(500).json({error: "There was a server side error!" + err});
+    //         } else {
+    //             res.status(200).json({message: "Todo was updated successfully."});
+    //         }
+    //     });
+    // console.log(req.params.id);
+    await Todo.findByIdAndUpdate({_id: req.params.id}, {
+        $set: {
+            title: "Javascript is easy to learn",
+            status: "inactive"
+        }
+    },
+    { useFindAndModify: false},
+     (err) => {
+        if(err){
+            res.status(500).json({error: "There was a server side error!" + err});
+        } else {
+            res.status(200).json({message: "Todo was updated successfully."});
+        }
+    }).clone();
 });
 
 // delete a todo
