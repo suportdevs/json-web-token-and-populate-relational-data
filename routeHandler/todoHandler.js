@@ -8,12 +8,28 @@ const Todo = new mongoose.model("Todo", todoSchema);
 
 // get All todos
 router.get('/', async (req, res) => {
-
+    await Todo.find({status: 'active'}).select({
+        _id: 0,
+        date: 0,
+        status:0
+    }).limit(2).exec((err, data) => {
+        if(err){
+            res.status(500).json({error: "There ware a server side error!" + err});
+        } else {
+            res.status(200).json({result: data, message: "Success"});
+        }
+    });
 });
 
 // get a single todo
 router.get('/:id', async (req, res) => {
-
+    await Todo.find({_id: req.params.id}, (err, data) => {
+        if(err){
+            res.status(500).json({error: "There ware a server side error!" + err});
+        } else {
+            res.status(200).json({result: data, message: "Success"});
+        }
+    }).clone();
 });
 
 // post a todo
@@ -54,15 +70,14 @@ router.put('/:id', async (req, res) => {
     //         } else {
     //             res.status(200).json({message: "Todo was updated successfully."});
     //         }
-    //     });
+    //     }).clone();
     // console.log(req.params.id);
-    await Todo.findByIdAndUpdate({_id: req.params.id}, {
+    const result = await Todo.findByIdAndUpdate({_id: req.params.id}, {
         $set: {
-            title: "Javascript is easy to learn",
-            status: "inactive"
+            status: "active"
         }
     },
-    { useFindAndModify: false},
+    { new: true, useFindAndModify: false},
      (err) => {
         if(err){
             res.status(500).json({error: "There was a server side error!" + err});
@@ -70,11 +85,18 @@ router.put('/:id', async (req, res) => {
             res.status(200).json({message: "Todo was updated successfully."});
         }
     }).clone();
+    console.log(result);
 });
 
 // delete a todo
 router.delete('/:id', async (req, res) => {
-
+    await Todo.deleteOne({_id: req.params.id}, (err) => {
+        if(err){
+            res.status(500).json({error: "There ware a server side error!" + err});
+        } else {
+            res.status(200).json({message: "Todo was deleted Successfully!"});
+        }
+    }).clone();
 });
 
 module.exports = router;
