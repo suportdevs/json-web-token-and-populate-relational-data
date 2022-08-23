@@ -5,6 +5,49 @@ const todoSchema = require('../schemas/todoSchema');
 
 const Todo = new mongoose.model("Todo", todoSchema);
 
+// get active status todo sync or async way
+router.get('/active', async (req, res) => {
+    const todo = new Todo();
+    try{
+        const data = await todo.findActive();
+        res.status(200).send({data});
+    } catch(err){
+        res.status(500).send({error: "There was a server side error! " + err});
+    }
+})
+
+// get active status todo callback way
+router.get('/active-callback', (req, res) => {
+    const todo = new Todo();
+    todo.findActiveCallback((err, data) => {
+        if(err){
+            res.status(500).send({error: "There was a server side error! " + err});
+        } else {
+            res.status(200).send({data});
+        }
+    });
+})
+
+// get title in js todo callback way
+router.get('/language', async (req, res) => {
+    try{
+        const data = await Todo.find().byLanguage('javascript');
+        res.status(200).send({data});
+    } catch(err){
+        res.status(500).send({error: "There was a server side error! " + err});
+    }
+})
+
+// get language in title todo callback way
+router.get('/title-js', (req, res) => {
+    Todo.findTitleINJs((err, data) => {
+        if(err){
+            res.status(500).send({error: "There was a server side error! " + err});
+        } else {
+            res.status(200).send({data});
+        }
+    });
+})
 
 // get All todos
 router.get('/', (req, res) => {
