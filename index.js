@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const todoHandler = require('./routeHandler/todoHandler');
 
 // express app initialization
 const app = express();
+dotenv.config();
 app.use(express.json())
 
-const dbUrl = 'mongodb+srv://suportdevs:suportdevs@cluster0.0idnwn5.mongodb.net/todo?retryWrites=true&w=majority';
+const dbUrl = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.0idnwn5.mongodb.net/${process.env.DB_DATABASE_NAME}?retryWrites=true&w=majority`;
 
 // database connect with mongoose
 mongoose.connect(dbUrl, {
