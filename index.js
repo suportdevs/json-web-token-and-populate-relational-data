@@ -35,6 +35,8 @@ const errorHandler = (err, req, res, next) => {
     }
 }
 
+app.use(errorHandler);
+
 app.listen(3000, () => {
     console.log("Listening to port 3000");
 })
