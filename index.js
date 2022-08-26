@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const todoHandler = require('./routeHandler/todoHandler');
+const userHandler = require('./routeHandler/userHandler');
 
 // express app initialization
 const app = express();
@@ -19,7 +20,7 @@ mongoose.connect(dbUrl, {
     .catch((err) => {console.log(err)})
 
 app.use('/todo', todoHandler);
-
+app.use('/user', userHandler);
 
 app.get('/', (req, res) => {
     res.send("hello world.");
